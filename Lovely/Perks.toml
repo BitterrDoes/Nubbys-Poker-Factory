@@ -1,0 +1,269 @@
+[manifest]
+version = "1.0.0"
+priority = 100
+
+
+#
+#
+# CREATING PERKS
+#
+#
+
+[[patches]] # Create the cardArea
+    [patches.pattern]
+    target = "game.lua"
+    pattern = '''
+        self.jokers = CardArea(
+            0, 0,
+            CAI.joker_W,
+            CAI.joker_H, 
+            {card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1, negative_info = 'joker'})
+    '''
+    position = "after"
+    payload = '''
+        self.perks = CardArea(
+            0, 0,
+            CAI.joker_W,
+            CAI.joker_H, 
+            {card_limit = 8, type = 'joker', highlight_limit = 1, negative_info = 'perk'})
+    '''
+    match_indent = true
+
+#
+#
+# OBTAINING PERKS
+#
+#
+
+[[patches]] # Add nub_PERKSTATE
+[patches.pattern]
+target = "globals.lua"
+pattern = '''
+    self.STATES = {    
+'''
+position = "after"
+payload = '''
+        PERK = "nub_PERKSTATE",
+
+'''
+match_indent = true
+
+[[patches]] # Make cards move away when the perk state is enabled
+[patches.pattern]
+target = "cardarea.lua"
+pattern = '''(self.config.type == 'hand' and ({[G.STATES.SHOP]=1, [G.STATES.TAROT_PACK]=1, [G.STATES.SPECTRAL_PACK]=1, [G.STATES.STANDARD_PACK]=1,[G.STATES.BUFFOON_PACK]=1,[G.STATES.PLANET_PACK]=1, [G.STATES.ROUND_EVAL]=1, [G.STATES.BLIND_SELECT]=1})[state]) or
+'''
+position = "at"
+payload = '''(self.config.type == 'hand' and ({[G.STATES.SHOP]=1, [G.STATES.PERK]=1, [G.STATES.TAROT_PACK]=1, [G.STATES.SPECTRAL_PACK]=1, [G.STATES.STANDARD_PACK]=1,[G.STATES.BUFFOON_PACK]=1,[G.STATES.PLANET_PACK]=1, [G.STATES.ROUND_EVAL]=1, [G.STATES.BLIND_SELECT]=1})[state]) or
+'''
+match_indent = false
+
+[[patches]] # define screen (scary)
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = ''' 
+function G.UIDEF.shop()
+'''
+position = "before"
+payload = '''
+function G.UIDEF.perk()
+    G.perk_perkArea = CardArea(
+      G.hand.T.x+0,
+      G.hand.T.y+G.ROOM.T.y + 9,
+      math.min(2*1.02*G.CARD_W,4.08*G.CARD_W),
+      1.05*G.CARD_H, 
+      {card_limit = 2, type = 'shop', highlight_limit = 1, negative_info = true}
+    )
+      
+    local t = {n=G.UIT.ROOT, config = {align = 'cm', w = 9, h = 4, colour = G.C.CLEAR}, nodes={
+                {n=G.UIT.C, config={align = "cm", w = 9, h = 4, padding = 0.1, emboss = 0.05, r = 0.1, colour = G.C.DYN_UI.BOSS_MAIN}, nodes={
+                    {n=G.UIT.R, config={align = "cm", padding = 0.05, minw = 8, minh = 4}, nodes={
+                      {n=G.UIT.C, config={align = "cm", padding = 0.2, r=0.2, colour = G.C.SECONDARY_SET.Spectral, emboss = 0.05, minw = 8, minh = 4}, nodes={
+
+                          {n=G.UIT.R, config={align = "cm", maxw = 7}, nodes={
+                            {n=G.UIT.T, config={text = localize('k_loottxt'), font=SMODS.Fonts.nub_ComicSans, scale = 1.3, colour = G.C.WHITE, shadow = true}},
+                          }},
+
+                          {n=G.UIT.R, config={align = "cm", maxw = 7, minh = 4}, nodes={
+                            {n=G.UIT.O, config={align = "cm", maxh = 1.05*G.CARD_H, object = G.perk_perkArea}},
+                          }},
+
+                          {n=G.UIT.R, config={align = "cm", maxw = 1, minh = .5, r=0.15,colour = G.C.FILTER, button = 'skip_perk', hover = true,shadow = true}, nodes = {
+                            {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'x', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                              {n=G.UIT.R, config={align = "cm"}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_skip'), font=SMODS.Fonts.nub_ComicSans, scale = 0.35, colour = G.C.WHITE, shadow = false}},
+                              }},
+                            }}
+                          }},
+                            {n=G.UIT.R, config={align = "cm"}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_skipsub'), font=SMODS.Fonts.nub_ComicSans, scale = 0.3, colour = G.C.WHITE, shadow = false}},
+                            }}
+
+                      }},
+                    }},
+                }
+              },
+              }}
+    return t
+end
+
+'''
+match_indent = true
+
+[[patches]] # create the update function for the screen
+[patches.pattern]
+target = "game.lua"
+pattern = ''' 
+function Game:update_shop(dt)
+    if not G.STATE_COMPLETE then
+'''
+payload = '''
+
+function Game:update_perk(dt)
+    if not G.STATE_COMPLETE then
+        stop_use()
+        ease_background_colour_blind(G.STATES.SPECTRAL_PACK) -- cant be bothered to make my own state colour for now
+        local perk_exists = not not G.perk
+        G.perk = UIBox{
+            definition = G.UIDEF.perk(),
+            config = {align='cm', w = 9, h = 4, offset = {x=0,y=-3.5}, major = G.hand, bond = 'Weak'}
+        }
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'after',
+                        delay = 0.2,
+                        blockable = false,
+                        func = function()
+                            if math.abs(G.perk.T.y - G.perk.VT.y) < 3 then
+                                G.ROOM.jiggle = G.ROOM.jiggle + 3
+                                play_sound('cardFan2')
+                                local nosave_perk = nil
+                                -- if not perk_exists then
+                                --     if G.load_perk_perks then 
+                                --         nosave_perk = true
+                                --         G.perk_perkArea:load(G.load_perk_perks)
+                                --         for k, v in ipairs(G.perk_perkArea.cards) do
+                                --             create_shop_card_ui(v)
+                                --             if v.ability.consumeable then v:start_materialize() end
+                                --             for _kk, vvv in ipairs(G.GAME.tags) do
+                                --                 if vvv:apply_to_run({type = 'store_joker_modify', card = v}) then break end
+                                --             end
+                                --         end
+                                --         G.load_perk_perks = nil
+                                --     else
+                                --         for i = 1, 2 - #G.perk_perkArea.cards do
+                                --             G.perk_perkArea:emplace(create_card_for_shop(G.perk_perkArea))
+                                --         end
+                                --     end
+                                -- end
+
+                                G.CONTROLLER:snap_to({node = G.perk:get_UIE_by_ID('skip_perk')})
+                                if not nosave_perk then G.E_MANAGER:add_event(Event({ func = function() save_run(); return true end})) end
+                                return true
+                            end
+                        end}))
+                    return true
+                end
+            }))
+          G.STATE_COMPLETE = true
+    end  
+    if self.buttons then self.buttons:remove(); self.buttons = nil end          
+end
+'''
+position = "before"
+match_indent = true
+
+[[patches]] # Skip button function
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+G.FUNCS.cash_out = function(e)
+'''
+payload = '''
+    G.FUNCS.skip_perk = function(e) 
+    stop_use()
+    ease_dollars(5)
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = function()
+        for i = #G.perk_perkArea.cards,1, -1 do
+            local c = G.perk_perkArea:remove_card(G.perk_perkArea.cards[i])
+            c:remove()
+            c = nil
+        end
+        G.perk:remove()
+        G.perk = nil
+        G.CONTROLLER.interrupt.focus = false
+        G.STATE_COMPLETE = false
+        G.STATE = G.STATES.BLIND_SELECT
+        G.CONTROLLER.locks.toggle_shop = nil
+        G.CONTROLLER:recall_cardarea_focus('perk_perkArea')
+        return true
+        end
+    }))
+    G.E_MANAGER:add_event(Event({ func = function() save_run(); return true end}))
+    end
+'''
+position = "before"
+match_indent = true
+
+[[patches]] # more make it so screen can pop up
+[patches.pattern]
+target = "game.lua"
+pattern = ''' 
+        if self.STATE == self.STATES.SHOP then 
+'''
+payload = '''
+        if self.STATE == self.STATES.PERK then 
+            self:update_perk(dt)
+        end
+        
+'''
+position = "before"
+match_indent = true
+
+
+[[patches]] # First half of the If _ % _ == 0 statement
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+    G.STATE = G.STATES.SHOP
+'''
+position = "before"
+payload = '''
+if G.GAME.round % 5 == 0 then
+    G.STATE = G.STATES.PERK
+    G.STATE_COMPLETE = false
+elseif G.GAME.round % 2 == 0 or (G.GAME.round + 1) % 3 == 0 then
+'''
+match_indent = true
+
+[[patches]] # Second half of the If _ % _ statement
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''
+    G.GAME.shop_d6ed = nil
+    G.STATE_COMPLETE = false
+'''
+position = "after"
+payload = '''
+else
+    G.STATE_COMPLETE = false
+    G.STATE = G.STATES.BLIND_SELECT
+    G.CONTROLLER.locks.toggle_shop = nil
+    if G.shop then 
+        G.E_MANAGER:add_event(Event({
+            trigger = 'immediate',
+            func = function()
+                G.shop:remove()
+                G.shop = nil
+                G.SHOP_SIGN:remove()
+                G.SHOP_SIGN = nil
+                return true
+            end
+        }))
+    end
+end
+'''
+match_indent = true

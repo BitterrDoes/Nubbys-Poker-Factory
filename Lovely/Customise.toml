@@ -1,0 +1,99 @@
+[manifest]
+version = "1.0.0"
+priority = 27
+
+[[patches]] # Add custom colors
+[patches.pattern]
+target = "globals.lua"
+pattern = '''
+        RENTAL = HEX('b18f43'),
+'''
+position = "after"
+payload = '''
+        BORDERPURPLE = HEX('7F7DFF'),
+        BGPURPLE = HEX('081453'),
+        NUBCYAN = HEX('60F6FF'),
+'''
+match_indent = true
+
+[[patches]] # customise label 1
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+function desc_from_rows(desc_nodes, empty, maxw)
+    local t = {}
+    for k, v in ipairs(desc_nodes) do
+      t[#t+1] = {n=G.UIT.R, config={align = "cm", maxw = maxw}, nodes=v}
+    end
+    return {n=G.UIT.R, config={align = "cm", colour = desc_nodes.background_colour or empty and G.C.CLEAR or G.C.UI.BACKGROUND_WHITE, r = 0.1, padding = 0.04, minw = 2, minh = 0.8, emboss = not empty and 0.05 or nil, filler = true, main_box_flag = desc_nodes.main_box_flag and true or nil}, nodes={
+      {n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=t}
+    }}
+  end
+'''
+position = "at"
+payload = '''
+local function desc_from_rows(desc_nodes, empty, maxw)
+    local t = {}
+    for k, v in ipairs(desc_nodes) do
+      for _, subv in pairs(v) do
+        if subv.config then
+          local col = subv.config.colour
+          if math.floor(col[1] * 1000) == 309 and math.floor(col[2] * 1000) == 388 and math.floor(col[3] * 1000) == 403 then
+            col[1] = 1
+            col[2] = 1
+            col[3] = 1
+          end
+        end
+      end
+      t[#t+1] = {n=G.UIT.R, config={align = "cl", maxw = maxw}, nodes=v}
+    end
+    return {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR, r = 0.1, padding = 0.04, minw = 2, minh = 0.8, emboss = not empty and 0.05 or nil, filler = true, main_box_flag = desc_nodes.main_box_flag and true or nil}, nodes={
+      {n=G.UIT.R, config={align = "cl", padding = 0.03}, nodes=t}
+    }}
+  end
+'''
+match_indent = true
+
+[[patches]] # customise label 2
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+return {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
+'''
+position = "at"
+payload = '''
+return {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
+'''
+match_indent = true
+
+[[patches]] # customise label 3
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+      local ret_val = {n=G.UIT.ROOT, config = {align = 'cm', colour = G.C.CLEAR}, nodes={
+          {n=G.UIT.C, config={align = "cm", func = 'show_infotip',object = Moveable(),ref_table = next(info_boxes) and info_boxes or nil}, nodes={
+          {n=G.UIT.R, config={padding = outer_padding, r = 0.12, colour = lighten(G.C.JOKER_GREY, 0.5), emboss = 0.07}, nodes={
+            {n=G.UIT.R, config={align = "cm", padding = 0.07, r = 0.1, colour = adjust_alpha(card_type_background, 0.8)}, nodes={
+              name_from_rows(AUT.name, is_playing_card and G.C.WHITE or nil),
+              desc_from_rows(AUT.main),
+              badges[1] and {n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=badges} or nil,
+            }}
+          }}
+        }},
+      }}
+'''
+position = "at"
+payload = '''
+      local ret_val = {n=G.UIT.ROOT, config = {align = 'cm', colour = G.C.CLEAR}, nodes={
+          {n=G.UIT.C, config={align = "cm", func = 'show_infotip',object = Moveable(),ref_table = next(info_boxes) and info_boxes or nil}, nodes={
+          {n=G.UIT.R, config={padding = outer_padding, r = 0.12, colour=G.C.BORDERPURPLE, emboss = 0.07, shadow = false}, nodes={
+            {n=G.UIT.R, config={align = "cm", padding = 0.07, r = 0.1, colour=G.C.BGPURPLE}, nodes={
+              name_from_rows(AUT.name, is_playing_card and G.C.CLEAR or nil),
+              desc_from_rows(AUT.main),
+              badges[1] and {n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=badges} or nil,
+            }}
+          }}
+        }},
+      }}
+'''
+match_indent = true

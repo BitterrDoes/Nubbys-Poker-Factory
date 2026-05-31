@@ -1,0 +1,14 @@
+{
+    "id": "Bitters_nub",
+    "name": "Nubby's Poker Factory",
+    "author": ["BitterDoes", "arc"],
+    "description": "wawa",
+    "prefix": "nub",
+	"priority": -7.50,
+    "main_file": "Main.lua",
+    "badge_colour": "321a70",
+    "dependencies": [
+        "Steamodded (>=1.0.0~ALPHA-1225a)"
+    ],
+    "version": "1.0.0"
+}
