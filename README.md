@@ -6,7 +6,8 @@ Holy balls
 
 - Shops are every 2 blinds | DONE
 - Perks after every 5th blind | DONE
-- make the perk page
+- make the perk page | DONE
+- make perks and implement into perk page 
 - some "jokers"
 - remove base jokers if i got enough i dunno
 - Special Events
