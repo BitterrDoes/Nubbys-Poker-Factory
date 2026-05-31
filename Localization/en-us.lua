@@ -11,6 +11,14 @@ return {
                     '{f:nub_ComicSans}*{f:nub_ComicSans,C:green, E:1}10%{f:nub_ComicSans} chance to give {f:nub_ComicSans,X:mult,C:white}X3{f:nub_ComicSans} Mult', -- Still contemplating making default font Comic Sans like it is in nubby's
                     '{f:nub_ComicSans}*{f:nub_ComicSans,C:green, E:1}40%{f:nub_ComicSans} chance if you are on your {f:nub_ComicSans,C:attention}last {f:nub_ComicSans}hand.'
                 },
+            },
+                        j_nub_monstrosity = {
+                name = '{f:nub_ComicSans}Monstrosity{}',
+                text = {
+                    '{f:nub_ComicSans,C:gold}Before Scoring {f:nub_arrows,C:gold}A',
+                    '{f:nub_ComicSans} Bounces, if it touches a card {f:nub_ComicSans,X:mult,C:white}X2{f:nub_ComicSans} Mult added to value at the start of main scoring', -- do chips or mult or whatever idc bitter you do you boo -arc
+                    '{f:nub_ComicSans} Value resets after blind complete.'
+                },
             }
         },
         Other = {},
