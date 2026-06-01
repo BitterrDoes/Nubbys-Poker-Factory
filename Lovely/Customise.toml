@@ -68,7 +68,6 @@ payload = '''
   function name_from_rows(name_nodes, background_colour, badges)
     if not name_nodes or (type(name_nodes) ~= 'table') or not next(name_nodes) then return end
     if badges then
-      print(badges)
       for _, ui in ipairs(badges) do
         name_nodes[#name_nodes+1] = ui
       end

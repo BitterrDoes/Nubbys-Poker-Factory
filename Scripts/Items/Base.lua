@@ -13,7 +13,6 @@ SMODS.Joker { -- Flame Skull
     add_to_deck = function(self, card, from_debuff)
         if from_debuff then return end
         -- local Joker = nil
-        print("added to deck")
         for _, deckJoker in pairs(G.jokers.cards) do
             if deckJoker.config.center_key == "j_nub_flamskull" then
                 deckJoker:remove()
@@ -36,7 +35,6 @@ SMODS.Joker { -- Flame Skull
         if context.joker_main then
             local ret = {}
             if SMODS.pseudorandom_probability(card, 'flam_hands', card.ability.extra.Chance1, 100) then
-                print("omg u lost ur hands")
                 ret["message"] = "-Hands!"
                 ret["colour"] = G.C.RED
                 ret["func"] = function()
@@ -49,7 +47,6 @@ SMODS.Joker { -- Flame Skull
                 end
             end
             if SMODS.pseudorandom_probability(card, 'flam_xmult', card.ability.extra.Chance2, 100) then
-                print("Xmult")
                 ret["xmult"] = card.ability.extra.xmult
             end
             return ret
@@ -83,7 +80,6 @@ SMODS.Joker { -- Flame Skull
             if context.joker_main then
                 local ret = {}
                 if SMODS.pseudorandom_probability(card, 'flam_hands', card.ability.extra.Chance1, 100) then
-                    print("omg u lost ur hands")
                     ret["message"] = "-Hands!"
                     ret["colour"] = G.C.RED
                     ret["func"] = function()
@@ -96,7 +92,6 @@ SMODS.Joker { -- Flame Skull
                     end
                 end
                 if SMODS.pseudorandom_probability(card, 'flam_xmult', card.ability.extra.Chance2, 100) then
-                    print("Xmult")
                     ret["xmult"] = card.ability.extra.xmult
                 end
                 return ret
@@ -120,7 +115,6 @@ SMODS.Joker {  -- Monstrosity
     add_to_deck = function(self, card, from_debuff)
         if from_debuff then return end
         -- local Joker = nil
-        print("added to deck")
         for _, deckJoker in pairs(G.jokers.cards) do
             if deckJoker.config.center_key == "j_nub_monstrosity" then
                 deckJoker:remove()
@@ -165,7 +159,6 @@ SMODS.Joker {  -- Monstrosity
         add_to_deck = function(self, card, from_debuff)
             if from_debuff then return end
             -- local Joker = nil
-            print("added to deck")
             for _, deckJoker in pairs(G.jokers.cards) do
                 if deckJoker.config.center_key == "j_nub_monstrosity" then
                     deckJoker:remove()
