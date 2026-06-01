@@ -13,7 +13,7 @@ return {
                 },
             },
                 j_nub_flamskullPLUS = {
-                    name = '{f:nub_ComicSans, C:blue}Flaming Skull+{}',
+                    name = '{f:nub_ComicSans,C:blue}Flaming Skull+{}',
                     text = {
                         '{f:nub_ComicSans,C:gold}Main Scoring {f:nub_arrows,C:gold}A',
                         '{f:nub_ComicSans}*{f:nub_ComicSans,C:green, E:1}#2#%{f:nub_ComicSans} chance to give {f:nub_ComicSans,X:mult,C:white}X#3#{f:nub_ComicSans} Mult', -- Still contemplating making default font Comic Sans like it is in nubby's

@@ -19,6 +19,8 @@ SMODS.Joker { -- Flame Skull
                 G.jokers:emplace(SMODS.create_card({
                         key = "j_nub_flamskullPLUS"
                 }))
+                card:remove()
+                return
             end
         end
     end,
@@ -121,6 +123,8 @@ SMODS.Joker {  -- Monstrosity
                 G.jokers:emplace(SMODS.create_card({
                         key = "j_nub_monstrosityPLUS"
                 }))
+                card:remove()
+                return
             end
         end
     end,
