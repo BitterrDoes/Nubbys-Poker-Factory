@@ -32,11 +32,11 @@ function desc_from_rows(desc_nodes, empty, maxw)
 '''
 position = "at"
 payload = '''
-local function desc_from_rows(desc_nodes, empty, maxw)
+function desc_from_rows(desc_nodes, empty, maxw)
     local t = {}
     for k, v in ipairs(desc_nodes) do
       for _, subv in pairs(v) do
-        if subv.config then
+        if subv.config and subv.config.colour then
           local col = subv.config.colour
           if math.floor(col[1] * 1000) == 309 and math.floor(col[2] * 1000) == 388 and math.floor(col[3] * 1000) == 403 then
             col[1] = 1
@@ -58,11 +58,23 @@ match_indent = true
 [patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = '''
-return {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
+  function name_from_rows(name_nodes, background_colour)
+    if not name_nodes or (type(name_nodes) ~= 'table') or not next(name_nodes) then return end
+    return {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
+  end
 '''
 position = "at"
 payload = '''
-return {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
+  function name_from_rows(name_nodes, background_colour, badges)
+    if not name_nodes or (type(name_nodes) ~= 'table') or not next(name_nodes) then return end
+    if badges then
+      print(badges)
+      for _, ui in ipairs(badges) do
+        name_nodes[#name_nodes+1] = ui
+      end
+    end
+    return {n=G.UIT.R, config={align = "cl", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
+  end
 '''
 match_indent = true
 
@@ -88,9 +100,8 @@ payload = '''
           {n=G.UIT.C, config={align = "cm", func = 'show_infotip',object = Moveable(),ref_table = next(info_boxes) and info_boxes or nil}, nodes={
           {n=G.UIT.R, config={padding = outer_padding, r = 0.12, colour=G.C.BORDERPURPLE, emboss = 0.07, shadow = false}, nodes={
             {n=G.UIT.R, config={align = "cm", padding = 0.07, r = 0.1, colour=G.C.BGPURPLE}, nodes={
-              name_from_rows(AUT.name, is_playing_card and G.C.CLEAR or nil),
+              name_from_rows(AUT.name, is_playing_card and G.C.CLEAR or nil, badges[1] and {n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=badges} or nil),
               desc_from_rows(AUT.main),
-              badges[1] and {n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=badges} or nil,
             }}
           }}
         }},

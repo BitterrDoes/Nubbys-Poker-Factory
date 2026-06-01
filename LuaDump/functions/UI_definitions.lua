@@ -1180,8 +1180,13 @@ end
     return {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR, padding = 0.1}, nodes=t}
   end
 
-  function name_from_rows(name_nodes, background_colour)
+  function name_from_rows(name_nodes, background_colour, badges)
     if not name_nodes or (type(name_nodes) ~= 'table') or not next(name_nodes) then return end
+    if badges then
+      for _, ui in ipairs(badges) do
+        name_nodes[#name_nodes+1] = ui
+      end
+    end
     return {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = background_colour, emboss = background_colour and 0.05 or nil}, nodes=name_nodes}
   end
 

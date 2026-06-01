@@ -1,55 +1,55 @@
-local function def()
-    return {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1}, nodes={
-      {n=G.UIT.R, config={align = "cm", minw = 1.5, minh = 0.4, r = 0.1, padding = 0.05, colour = G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}}}}
-    }}
-end
+-- local function def()
+--     return {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1}, nodes={
+--       {n=G.UIT.R, config={align = "cm", minw = 1.5, minh = 0.4, r = 0.1, padding = 0.05, colour = G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}}}}
+--     }}
+-- end
 
-if G.box then
-    G.box:remove()
-    G.box = nil
-end
+-- if G.box then
+--     G.box:remove()
+--     G.box = nil
+-- end
 
-G.box = UIBox{
-    definition = def(),
-    config = {align='cm', w = 9, h = 4, offset = {x=0,y=0}, major = G, bond = 'Weak'}
-}
-return not not G.box
+-- G.box = UIBox{
+--     definition = def(),
+--     config = {align='cm', w = 9, h = 4, offset = {x=0,y=0}, major = G, bond = 'Weak'}
+-- }
+-- return not not G.box
 
-local function def2(desc_nodes, name)
-  local name_nodes
-  if not desc_nodes.name_styled then
-    name_nodes = {{n=G.UIT.T, config={text = name, scale = 0.32, colour = G.C.UI.TEXT_LIGHT}}}
-  else
-    name_nodes = {desc_nodes.name_styled}
-  end
-  local t = {}
-  for k, v in ipairs(desc_nodes) do
-    t[#t+1] = {n=G.UIT.R, config={align = "cm"}, nodes=v}
-  end
-  return {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.GREY, 0.15), r = 0.1}, nodes={
-    {n=G.UIT.R, config={align = "tm", minh = 0.36, padding = 0.03}, nodes=name_nodes},
-    {n=G.UIT.R, config={align = "cm", minw = 1.5, minh = 0.4, r = 0.1, padding = 0.05, colour = desc_nodes.background_colour or G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=t}}}
-  }}
-end
+-- local function def2(desc_nodes, name)
+--   local name_nodes
+--   if not desc_nodes.name_styled then
+--     name_nodes = {{n=G.UIT.T, config={text = name, scale = 0.32, colour = G.C.UI.TEXT_LIGHT}}}
+--   else
+--     name_nodes = {desc_nodes.name_styled}
+--   end
+--   local t = {}
+--   for k, v in ipairs(desc_nodes) do
+--     t[#t+1] = {n=G.UIT.R, config={align = "cm"}, nodes=v}
+--   end
+--   return {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.GREY, 0.15), r = 0.1}, nodes={
+--     {n=G.UIT.R, config={align = "tm", minh = 0.36, padding = 0.03}, nodes=name_nodes},
+--     {n=G.UIT.R, config={align = "cm", minw = 1.5, minh = 0.4, r = 0.1, padding = 0.05, colour = desc_nodes.background_colour or G.C.WHITE}, nodes={{n=G.UIT.R, config={align = "cm", padding = 0.03}, nodes=t}}}
+--   }}
+-- end
 
-local function def()
-    return  {n=G.UIT.R, config={align = "cm"}, nodes={
-              {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, padding = 0.05, emboss = 0.05}, nodes={
-                def2(G.jokers.cards[1].ability_UIBox_table.info, G.jokers.cards[1].label)
-              }}
-            }}
-end
+-- local function def()
+--     return  {n=G.UIT.R, config={align = "cm"}, nodes={
+--               {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, padding = 0.05, emboss = 0.05}, nodes={
+--                 def2(G.jokers.cards[1].ability_UIBox_table.info, G.jokers.cards[1].label)
+--               }}
+--             }}
+-- end
 
-if G.box then
-    G.box:remove()
-    G.box = nil
-end
+-- if G.box then
+--     G.box:remove()
+--     G.box = nil
+-- end
 
-G.box = UIBox{
-    definition = def(),
-    config = {align='cm', w = 9, h = 4, offset = {x=0,y=0}, major = G, bond = 'Weak'}
-}
-return not not G.box
+-- G.box = UIBox{
+--     definition = def(),
+--     config = {align='cm', w = 9, h = 4, offset = {x=0,y=0}, major = G, bond = 'Weak'}
+-- }
+-- return not not G.box
 
 
 
@@ -150,9 +150,9 @@ G.box = UIBox({
 
 return not not G.box
 
-eval for _, v in pairs(G.jokers.cards[1]:generate_UIBox_ability_table().main) do
-  for _, k in pairs(v) do
-    print(tprint(k.config))
-  end
-end
+-- eval for _, v in pairs(G.jokers.cards[1]:generate_UIBox_ability_table().main) do
+--   for _, k in pairs(v) do
+--     print(tprint(k.config))
+--   end
+-- end
 

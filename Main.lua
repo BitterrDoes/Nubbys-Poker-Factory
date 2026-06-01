@@ -79,4 +79,4 @@ end
 function Reset_card_picker_selection()
 end
 
-Nuboker.reset_game_globals(false, true) -- so sketch
+Nuboker.reset_game_globals(false, true) -- so sketch but im like a gay twink furry or smth

@@ -6,7 +6,7 @@
 -- }
 
 local Animated = NFS.getDirectoryItems(Nuboker.path .. "/Assets/1x/Animated")
-for _, filename in ipairs(files) do -- iterate over all files in the directory
+for _, filename in ipairs(Animated) do -- iterate over all files in the directory
 	if filename:match(".png$") and filename:match("^_") then -- check lua n wahtever
 		SMODS.Atlas {
 			key = filename .."Atlas",
