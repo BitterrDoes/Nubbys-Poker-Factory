@@ -37,7 +37,42 @@ return {
                         '{f:nub_ComicSans}*playing cards hit will add double their {C:blue,f:nub_ComicSans}Chips {f:nub_ComicSans}and {C:red,f:nub_ComicSans}Mult {f:nub_ComicSans}to final score',
                         '{f:nub_ComicSans,C:inactive,s:0.8}Hit cards will also add Xchips and Xmult'
                     },
-                }
+                },
+            j_nub_squid = {
+                name = '{f:nub_ComicSans}Squid{}',
+                text = {
+                    '{f:nub_ComicSans,C:gold}Before Scoring {f:nub_arrows,C:gold}A',
+                    '{f:nub_ComicSans}*Mutates into the {f:nub_ComicSans,C:attention}non-upgraded',
+                    '{f:nub_ComicSans}version of the ITEM TO THE LEFT OF ME',
+                    '{f:nub_ComicSans,C:inactive,s:0.8}Unmutates after round'
+
+                },
+            },
+                j_nub_squidPLUS = {
+                    name = '{f:nub_ComicSans,C:blue}Squid+{}',
+                    text = {
+                    '{f:nub_ComicSans,C:gold}Before Scoring {f:nub_arrows,C:gold}A',
+                    '{f:nub_ComicSans}*Mutates into the {f:nub_ComicSans,C:attention}upgraded',
+                    '{f:nub_ComicSans}version of the ITEM TO THE LEFT OF ME',
+                    '{f:nub_ComicSans,C:inactive,s:0.8}Unmutates after round'
+                    },
+                },
+            j_nub_cheesehouse = {
+                name = '{f:nub_ComicSans}Cheese House{}',
+                text = {
+                    '{f:nub_ComicSans,C:gold}Final scoring step {f:nub_arrows,C:gold}A',
+                    '{f:nub_ComicSans}*{f:nub_ComicSans,C:blue}+#1# {f:nub_ComicSans}chips.',
+                    '{f:nub_ComicSans}*If you are on ante 4 or higher, gain {f:nub_ComicSans,C:blue}+#2# {f:nub_ComicSans}chips instead.',
+                },
+            },
+                j_nub_cheesehousePLUS = {
+                    name = '{f:nub_ComicSans,C:blue}Cheese House+{}',
+                    text = {
+                    '{f:nub_ComicSans,C:gold}Final scoring step {f:nub_arrows,C:gold}A',
+                    '{f:nub_ComicSans}*{f:nub_ComicSans,C:blue}+#1# {f:nub_ComicSans}chips.',
+                    '{f:nub_ComicSans}*If you are on ante 4 or higher, gain {f:nub_ComicSans,C:blue}+#2# {f:nub_ComicSans}chips instead.',
+                    },
+                },
         },
         Other = {},
         Planet = {},
