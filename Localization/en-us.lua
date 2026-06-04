@@ -74,6 +74,16 @@ return {
                     },
                 },
         },
+        Perk = {
+            prk_nub_buckshot = {
+                    name = '{f:nub_ComicSans}Buckshot Perk{}',
+                    text = {
+                    '{f:nub_ComicSans,C:gold}First card scored {f:nub_arrows,C:gold}A',
+                    '{f:nub_ComicSans}*If the first {f:nub_ComicSans,C:attention}card scored {f:nub_ComicSans}was the highest card', 
+                    '{f:nub_ComicSans}force-triggers the items in {f:nub_ComicSans,C:attention,s:1.05}SLOTS #1# and #2#{f:nub_ComicSans}, {f:nub_ComicSans,C:attention}2{f:nub_ComicSans} times each',
+                    },
+            },
+        },
         Other = {},
         Planet = {},
         Spectral = {},
@@ -89,14 +99,12 @@ return {
         challenge_names = {},
         collabs = {},
         dictionary = {
-            k_corrupt = "Corrupt",
             k_loottxt = "YOU GOT LOOT!",
             k_skip = "Skip!",
             k_skipsub = "Gives +$5"
         },
         high_scores = {},
         labels = {
-            k_corrupt = "Corrupt",
         },
         poker_hand_descriptions = {},
         poker_hands = {},

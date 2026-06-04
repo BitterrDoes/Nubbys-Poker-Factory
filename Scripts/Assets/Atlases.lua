@@ -1,9 +1,9 @@
--- SMODS.Atlas {
--- 	key = "JokersAtlas",
--- 	path = "UnanimatedJokers.png",
--- 	px = 71,
--- 	py = 95
--- }
+SMODS.Atlas {
+	key = "Perks",
+	path = "Perks.png",
+	px = 95,
+	py = 95,
+}
 
 local Animated = NFS.getDirectoryItems(Nuboker.path .. "/Assets/1x/Animated")
 for _, filename in ipairs(Animated) do -- iterate over all files in the directory

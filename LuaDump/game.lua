@@ -2273,7 +2273,7 @@ function Game:start_run(args)
         hand_H = 0.95*G.CARD_H,
         play_W = 5.3*G.CARD_W,
         play_H = 0.95*G.CARD_H,
-        joker_W = 4.9*G.CARD_W,
+        joker_W = z,
         joker_H = 0.95*G.CARD_H,
         consumeable_W = 2.3*G.CARD_W,
         consumeable_H = 0.95*G.CARD_H

@@ -3,11 +3,7 @@ version = "1.0.0"
 priority = 100
 
 
-#
-#
 # CREATING PERKS
-#
-#
 
 [[patches]] # Create the cardArea
     [patches.pattern]
@@ -21,26 +17,90 @@ priority = 100
     '''
     position = "after"
     payload = '''
+
         self.perks = CardArea(
-            0, 0,
+            0, 0, -- 4. whatever, CAI.joker_W / 2
             CAI.joker_W,
-            CAI.joker_H, 
+            0.95*G.CARD_W / 1.5, 
             {card_limit = 8, type = 'joker', highlight_limit = 1, negative_info = 'perk'})
     '''
     match_indent = true
+    
+[[patches]] # Move area to right place
+    [patches.pattern]
+    target = "functions/common_events.lua"
+    pattern = '''
+        G.jokers.T.x = G.hand.T.x - 0.1
+        G.jokers.T.y = 0
+    '''
+    position = "after"
+    payload = '''
 
-#
-#
-# OBTAINING PERKS
-#
-#
+        G.perks.T.x = G.hand.T.x - 0.1
+        G.perks.T.y = G.perks.T.h * 1.5
+    '''
+    match_indent = true
 
-[[patches]] # Add nub_PERKSTATE
+[[patches]] # make the button definitions
+    [patches.pattern]
+    target = "functions/UI_definitions.lua"
+    pattern = '''function create_UIBox_your_collection_jokers()'''
+    position = "before"
+    payload = '''
+    create_UIBox_your_collection_perk = function()
+        return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Perk, {5,5,5}, {
+            no_materialize = true,
+            h_mod = 0.95,
+        })
+    end
+
+    G.FUNCS.your_collection_perks = function(e)
+    G.SETTINGS.paused = true
+    G.FUNCS.overlay_menu{
+        definition = create_UIBox_your_collection_perk(),
+    }
+    end
+
+    '''
+    match_indent = true 
+
+[[patches]] # remove perk shadow
+    [patches.pattern]
+    target = "card.lua"
+    pattern = '''    self:set_base(card, true)
+    '''
+    position = "after"
+    payload = '''
+    if self.ability.set == "Perk" then
+        self.no_shadow = true
+    end
+    '''
+    match_indent = true 
+
+[[patches]] # add button in collection
+    [patches.pattern]
+    target = "functions/UI_definitions.lua"
+    pattern = '''UIBox_button({button = 'your_collection_jokers', label = {localize('b_jokers')}, count = G.DISCOVER_TALLIES.jokers,  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'}),
+UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}),
+UIBox_button({button = 'your_collection_vouchers', label = {localize('b_vouchers')}, count = G.DISCOVER_TALLIES.vouchers, minw = 5, id = 'your_collection_vouchers'}),'''
+    position = "at"
+    payload = '''UIBox_button({button = 'your_collection_jokers', label = {localize('b_jokers')}, count = G.DISCOVER_TALLIES.jokers,  minw = 5, minh = 1.7, scale = 0.6, id = 'your_collection_jokers'}),
+UIBox_button({button = 'your_collection_perks', label = {"Perks"}, count = {tally=1, of=1},  minw = 5, minh = 1.35, scale = 0.6, id = 'your_collection_perks'}),
+UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minh = .9, minw = 5}),
+UIBox_button({button = 'your_collection_vouchers', label = {localize('b_vouchers')}, count = G.DISCOVER_TALLIES.vouchers, minh = .9, minw = 5, id = 'your_collection_vouchers'}),
+    '''#                                                   ^^ needs localization
+    match_indent = true 
+
+
+
+
+
+[[patches]] # ---- BEGINNING OF PERK OBTAINMENT ----    | Add nub_PERKSTATE
 [patches.pattern]
 target = "globals.lua"
 pattern = '''
     self.STATES = {    
-'''
+''' 
 position = "after"
 payload = '''
         PERK = "nub_PERKSTATE",
